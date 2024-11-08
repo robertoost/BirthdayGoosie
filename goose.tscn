@@ -1,0 +1,222 @@
+[gd_scene load_steps=23 format=3 uid="uid://d4hnw4he3r0ui"]
+
+[ext_resource type="Texture2D" uid="uid://bn2tugdrjnqlc" path="res://goose_spritesheet.png" id="1_1e5j5"]
+[ext_resource type="AudioStream" uid="uid://cmmyxtwnbq8t6" path="res://honks/honk_1.wav" id="2_yudh3"]
+[ext_resource type="AudioStream" uid="uid://by5jkfv3lfrkw" path="res://honks/honk_2.wav" id="3_xqhct"]
+[ext_resource type="AudioStream" uid="uid://cho5snvaowotj" path="res://honks/honk_3.wav" id="4_o80f2"]
+[ext_resource type="AudioStream" uid="uid://dw5w380u4ynt8" path="res://honks/honk_4.wav" id="5_b33n8"]
+[ext_resource type="AudioStream" uid="uid://m435pi85p2b1" path="res://honks/honk_5.wav" id="6_osjan"]
+
+[sub_resource type="GDScript" id="GDScript_q57dd"]
+script/source = "extends CharacterBody2D
+
+
+const SPEED = 800.0
+const JUMP_VELOCITY = -600.0
+
+@onready var animation = $AnimatedSprite2D
+@onready var audio = $AudioStreamPlayer2D
+
+func _physics_process(delta: float) -> void:
+	
+	
+	if Input.is_action_just_pressed(\"honk\"):
+		audio.play(0)
+
+	# Add the gravity.
+	#if not is_on_floor():
+		#velocity += get_gravity() * delta
+
+	# Handle jump.
+	#if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		#velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"left\", \"right\")
+	var vert_direction := Input.get_axis(\"up\", \"down\")
+	
+	_handle_animation(direction, vert_direction)
+	
+	if vert_direction:
+		velocity.y = vert_direction * SPEED
+	else:
+		velocity.y = move_toward(velocity.y, 0, SPEED)
+	
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+	move_and_slide()
+
+func _handle_animation(direction, vert_direction):
+	
+	var animation_name = \"\"
+	if audio.playing:
+		animation_name = \"honk_\"
+	
+	#if not is_on_floor():
+		#animation.play(\"jump\")
+		#if direction:
+			#animation.scale.x = direction
+	
+	if direction or vert_direction:
+		animation_name = animation_name + \"walk\"
+		var seek = animation.animation == \"walk\" and animation_name != animation.animation
+		var frame_progress = animation.frame_progress
+		animation.play(animation_name)
+		if seek:
+			animation.frame_progress = frame_progress
+	else:
+		animation_name = animation_name + \"idle\"
+		animation.play(animation_name)
+	if direction:
+		animation.scale.x = direction
+ 
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ojwg"]
+size = Vector2(500, 650)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8x0k7"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(0, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gobtl"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(3000, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2givt"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(1200, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dflvp"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(1800, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf4b8"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(2400, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1y1o"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(600, 700, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvux3"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(0, 0, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dr0rg"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(3000, 0, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7brha"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(1200, 0, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xiyeg"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(1800, 0, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldco0"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(2400, 0, 600, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xqpk"]
+atlas = ExtResource("1_1e5j5")
+region = Rect2(600, 0, 600, 700)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oevbk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8x0k7")
+}],
+"loop": true,
+"name": &"honk_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gobtl")
+}],
+"loop": true,
+"name": &"honk_jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2givt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dflvp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nf4b8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1y1o")
+}],
+"loop": true,
+"name": &"honk_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvux3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dr0rg")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7brha")
+}, {
+"duration": 1.2,
+"texture": SubResource("AtlasTexture_xiyeg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldco0")
+}, {
+"duration": 1.2,
+"texture": SubResource("AtlasTexture_2xqpk")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4n3w4"]
+random_pitch = 1.05
+streams_count = 5
+stream_0/stream = ExtResource("2_yudh3")
+stream_1/stream = ExtResource("3_xqhct")
+stream_2/stream = ExtResource("4_o80f2")
+stream_3/stream = ExtResource("5_b33n8")
+stream_4/stream = ExtResource("6_osjan")
+
+[node name="Goose" type="CharacterBody2D"]
+script = SubResource("GDScript_q57dd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -328)
+shape = SubResource("RectangleShape2D_6ojwg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -326)
+sprite_frames = SubResource("SpriteFrames_oevbk")
+animation = &"walk"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -324)
+stream = SubResource("AudioStreamRandomizer_4n3w4")
