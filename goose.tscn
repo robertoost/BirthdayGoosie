@@ -1,83 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://d4hnw4he3r0ui"]
+[gd_scene load_steps=32 format=3 uid="uid://d4hnw4he3r0ui"]
 
 [ext_resource type="Texture2D" uid="uid://bn2tugdrjnqlc" path="res://goose_spritesheet.png" id="1_1e5j5"]
+[ext_resource type="Script" path="res://goose.gd" id="1_6e6jh"]
+[ext_resource type="AudioStream" uid="uid://bbgok1vs8vda8" path="res://step2.wav" id="2_kh86p"]
 [ext_resource type="AudioStream" uid="uid://cmmyxtwnbq8t6" path="res://honks/honk_1.wav" id="2_yudh3"]
 [ext_resource type="AudioStream" uid="uid://by5jkfv3lfrkw" path="res://honks/honk_2.wav" id="3_xqhct"]
 [ext_resource type="AudioStream" uid="uid://cho5snvaowotj" path="res://honks/honk_3.wav" id="4_o80f2"]
 [ext_resource type="AudioStream" uid="uid://dw5w380u4ynt8" path="res://honks/honk_4.wav" id="5_b33n8"]
 [ext_resource type="AudioStream" uid="uid://m435pi85p2b1" path="res://honks/honk_5.wav" id="6_osjan"]
-
-[sub_resource type="GDScript" id="GDScript_q57dd"]
-script/source = "extends CharacterBody2D
-
-
-const SPEED = 800.0
-const JUMP_VELOCITY = -600.0
-
-@onready var animation = $AnimatedSprite2D
-@onready var audio = $AudioStreamPlayer2D
-
-func _physics_process(delta: float) -> void:
-	
-	
-	if Input.is_action_just_pressed(\"honk\"):
-		audio.play(0)
-
-	# Add the gravity.
-	#if not is_on_floor():
-		#velocity += get_gravity() * delta
-
-	# Handle jump.
-	#if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
-		#velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis(\"left\", \"right\")
-	var vert_direction := Input.get_axis(\"up\", \"down\")
-	
-	_handle_animation(direction, vert_direction)
-	
-	if vert_direction:
-		velocity.y = vert_direction * SPEED
-	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
-	
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	move_and_slide()
-
-func _handle_animation(direction, vert_direction):
-	
-	var animation_name = \"\"
-	if audio.playing:
-		animation_name = \"honk_\"
-	
-	#if not is_on_floor():
-		#animation.play(\"jump\")
-		#if direction:
-			#animation.scale.x = direction
-	
-	if direction or vert_direction:
-		animation_name = animation_name + \"walk\"
-		var seek = animation.animation == \"walk\" and animation_name != animation.animation
-		var frame_progress = animation.frame_progress
-		animation.play(animation_name)
-		if seek:
-			animation.frame_progress = frame_progress
-	else:
-		animation_name = animation_name + \"idle\"
-		animation.play(animation_name)
-	if direction:
-		animation.scale.x = direction
- 
-"
+[ext_resource type="Texture2D" uid="uid://dn5t51fshkn2w" path="res://goose_shadow.png" id="7_ka8s2"]
+[ext_resource type="AudioStream" uid="uid://b6q6uautwbyo0" path="res://flap.wav" id="8_e1e5y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ojwg"]
-size = Vector2(500, 650)
+size = Vector2(298, 60)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8x0k7"]
 atlas = ExtResource("1_1e5j5")
@@ -149,13 +84,13 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2givt")
 }, {
-"duration": 1.0,
+"duration": 1.2,
 "texture": SubResource("AtlasTexture_dflvp")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nf4b8")
 }, {
-"duration": 1.0,
+"duration": 1.2,
 "texture": SubResource("AtlasTexture_g1y1o")
 }],
 "loop": true,
@@ -196,8 +131,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4n3w4"]
-random_pitch = 1.05
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r5lkh"]
+size = Vector2(303, 155.5)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_imos5"]
+random_pitch = 1.25
+random_volume_offset_db = 0.89
 streams_count = 5
 stream_0/stream = ExtResource("2_yudh3")
 stream_1/stream = ExtResource("3_xqhct")
@@ -205,18 +144,129 @@ stream_2/stream = ExtResource("4_o80f2")
 stream_3/stream = ExtResource("5_b33n8")
 stream_4/stream = ExtResource("6_osjan")
 
+[sub_resource type="Animation" id="Animation_0d317"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-300, -680)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D/FlipCam/HonkArea:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bs852"]
+resource_name = "jump"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.7),
+"transitions": PackedFloat32Array(0.297302, 1.8025, 2),
+"update": 0,
+"values": [Vector2(-300, -680), Vector2(-300, -900), Vector2(-300, -680)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D/FlipCam/HonkArea:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.7),
+"transitions": PackedFloat32Array(0.297302, 1.8025, 2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -220), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1hcfp"]
+_data = {
+"RESET": SubResource("Animation_0d317"),
+"jump": SubResource("Animation_bs852")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_eotpt"]
+random_pitch = 1.25
+random_volume_offset_db = 0.22
+streams_count = 1
+stream_0/stream = ExtResource("8_e1e5y")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4n3w4"]
+random_pitch = 1.2
+random_volume_offset_db = 0.45
+streams_count = 1
+stream_0/stream = ExtResource("2_kh86p")
+
 [node name="Goose" type="CharacterBody2D"]
-script = SubResource("GDScript_q57dd")
+y_sort_enabled = true
+script = ExtResource("1_6e6jh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -328)
+position = Vector2(3, -15)
 shape = SubResource("RectangleShape2D_6ojwg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -326)
+z_index = 1
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_oevbk")
-animation = &"walk"
+animation = &"honk_idle"
+centered = false
+offset = Vector2(-300, -680)
+
+[node name="FlipCam" type="Node2D" parent="AnimatedSprite2D"]
+
+[node name="HonkArea" type="Area2D" parent="AnimatedSprite2D/FlipCam"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/FlipCam/HonkArea"]
+position = Vector2(375.5, -613.75)
+shape = SubResource("RectangleShape2D_r5lkh")
+
+[node name="CameraAnchor" type="Node2D" parent="AnimatedSprite2D/FlipCam"]
+position = Vector2(640, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(0, -324)
+stream = SubResource("AudioStreamRandomizer_imos5")
+volume_db = 9.865
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("7_ka8s2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1hcfp")
+}
+
+[node name="Flaps" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -648)
+stream = SubResource("AudioStreamRandomizer_eotpt")
+volume_db = 10.439
+pitch_scale = 2.05
+
+[node name="Footsteps" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -324)
 stream = SubResource("AudioStreamRandomizer_4n3w4")
+volume_db = 15.344
+pitch_scale = 3.0
+
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

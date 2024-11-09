@@ -1,0 +1,84 @@
+[gd_scene load_steps=11 format=3 uid="uid://d2y4tquqqh4w6"]
+
+[ext_resource type="Texture2D" uid="uid://dfq2pxnaghqaa" path="res://cake_spritesheet.png" id="1_ck8nc"]
+[ext_resource type="Script" path="res://cake.gd" id="1_ombk0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5k0w8"]
+size = Vector2(595, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ed1s"]
+atlas = ExtResource("1_ck8nc")
+region = Rect2(650, 0, 650, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thjb4"]
+atlas = ExtResource("1_ck8nc")
+region = Rect2(1300, 0, 650, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjqwd"]
+atlas = ExtResource("1_ck8nc")
+region = Rect2(1950, 0, 650, 700)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kdjf0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ed1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_thjb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjqwd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kcox"]
+atlas = ExtResource("1_ck8nc")
+region = Rect2(0, 0, 650, 700)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ydki0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8kcox")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hejei"]
+size = Vector2(183, 84)
+
+[node name="Cake" type="CharacterBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_ombk0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-15.5, -71.5)
+shape = SubResource("RectangleShape2D_5k0w8")
+
+[node name="CakeFlames" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_kdjf0")
+frame_progress = 0.242991
+offset = Vector2(0, -300)
+
+[node name="CakeSprite" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_ydki0")
+offset = Vector2(0, -300)
+
+[node name="FlameArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlameArea"]
+position = Vector2(-57.5, -612)
+shape = SubResource("RectangleShape2D_hejei")
+
+[connection signal="area_entered" from="FlameArea" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="FlameArea" to="." method="_on_flame_area_area_exited"]

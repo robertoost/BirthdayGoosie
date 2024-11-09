@@ -1,0 +1,156 @@
+[gd_scene load_steps=17 format=3 uid="uid://cdcjqptibcs5q"]
+
+[ext_resource type="Texture2D" uid="uid://bivnut5xdn47x" path="res://checkbox_spritesheet.png" id="1_5170t"]
+[ext_resource type="Script" path="res://checklist.gd" id="1_rtnks"]
+[ext_resource type="Texture2D" uid="uid://bo0fpin7tnu17" path="res://checklist.png" id="2_xblnb"]
+[ext_resource type="AudioStream" uid="uid://d1ved8qjxs7nm" path="res://check.wav" id="4_4dsfg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8yjow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xblnb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahggl"]
+atlas = ExtResource("1_5170t")
+region = Rect2(125, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxmxy"]
+atlas = ExtResource("1_5170t")
+region = Rect2(250, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mb464"]
+atlas = ExtResource("1_5170t")
+region = Rect2(375, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a4yp"]
+atlas = ExtResource("1_5170t")
+region = Rect2(500, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tk5v8"]
+atlas = ExtResource("1_5170t")
+region = Rect2(625, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qttk7"]
+atlas = ExtResource("1_5170t")
+region = Rect2(0, 0, 125, 125)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3xgun"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ahggl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxmxy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mb464")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a4yp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tk5v8")
+}],
+"loop": false,
+"name": &"checked",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qttk7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_hrxv4"]
+resource_name = "show_checklist"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ChecklistSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.466517, 0.466516),
+"update": 0,
+"values": [Vector2(350, -400), Vector2(350, 400)]
+}
+
+[sub_resource type="Animation" id="Animation_dutiu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ChecklistSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(350, 400)]
+}
+
+[sub_resource type="Animation" id="Animation_elifr"]
+resource_name = "hide_checklist"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ChecklistSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2.54912, 1.7411),
+"update": 0,
+"values": [Vector2(350, 400), Vector2(350, -400)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_frses"]
+_data = {
+"RESET": SubResource("Animation_dutiu"),
+"hide_checklist": SubResource("Animation_elifr"),
+"show_checklist": SubResource("Animation_hrxv4")
+}
+
+[node name="Checklist" type="CanvasLayer"]
+script = ExtResource("1_rtnks")
+
+[node name="ChecklistSprite" type="AnimatedSprite2D" parent="."]
+z_index = 9
+position = Vector2(350, 400)
+sprite_frames = SubResource("SpriteFrames_8yjow")
+
+[node name="SongMarkSprite" type="AnimatedSprite2D" parent="ChecklistSprite"]
+z_index = 10
+position = Vector2(-193, -108)
+sprite_frames = SubResource("SpriteFrames_3xgun")
+
+[node name="GiftMarkSprite" type="AnimatedSprite2D" parent="ChecklistSprite"]
+z_index = 10
+position = Vector2(-195, 70)
+sprite_frames = SubResource("SpriteFrames_3xgun")
+
+[node name="CandleMarkSprite" type="AnimatedSprite2D" parent="ChecklistSprite"]
+z_index = 10
+position = Vector2(-203, 243)
+sprite_frames = SubResource("SpriteFrames_3xgun")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_4dsfg")
+volume_db = -4.05
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_frses")
+}

@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://8o3aekaqkfaj"]
+
+[ext_resource type="Script" path="res://gift.gd" id="1_fvl7a"]
+[ext_resource type="Texture2D" uid="uid://ltiaty7y5fot" path="res://gift1.png" id="1_ksy24"]
+[ext_resource type="Texture2D" uid="uid://ccatm3qnbmnon" path="res://gift1_opened.png" id="2_r8k5p"]
+[ext_resource type="Texture2D" uid="uid://ru4bj2o0y84j" path="res://pow.png" id="2_rr7eb"]
+[ext_resource type="Texture2D" uid="uid://dn5t51fshkn2w" path="res://goose_shadow.png" id="3_qjyjw"]
+[ext_resource type="AudioStream" uid="uid://bu7tmwn281obe" path="res://thud.mp3" id="5_6jkyp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5qhlf"]
+size = Vector2(383.5, 134)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e4x1j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ksy24")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": ExtResource("2_rr7eb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_r8k5p")
+}],
+"loop": false,
+"name": &"opened",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a203o"]
+size = Vector2(426, 144)
+
+[node name="Gift" type="CharacterBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_fvl7a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -69)
+shape = SubResource("RectangleShape2D_5qhlf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -134)
+sprite_frames = SubResource("SpriteFrames_e4x1j")
+animation = &"closed"
+centered = false
+offset = Vector2(-250, -300)
+
+[node name="GooseShadow" type="Sprite2D" parent="."]
+position = Vector2(-12, -68)
+rotation = -3.14159
+scale = Vector2(1.015, -2.45)
+texture = ExtResource("3_qjyjw")
+
+[node name="OpenTriggerArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OpenTriggerArea"]
+position = Vector2(-2, -46)
+shape = SubResource("RectangleShape2D_a203o")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_6jkyp")
+volume_db = -3.96
+pitch_scale = 1.4
+
+[connection signal="body_entered" from="OpenTriggerArea" to="." method="_on_open_trigger_area_body_entered"]
