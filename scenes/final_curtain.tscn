@@ -1,0 +1,206 @@
+[gd_scene load_steps=31 format=3 uid="uid://b48s4awroy6rw"]
+
+[ext_resource type="Texture2D" uid="uid://c0j4a1wtyn0qd" path="res://sprites/final_curtain.png" id="1_ghlf5"]
+[ext_resource type="Script" path="res://scenes/final_curtain.gd" id="1_lxy5v"]
+[ext_resource type="AudioStream" uid="uid://cmmyxtwnbq8t6" path="res://audio/honks/honk_1.wav" id="3_wb3kn"]
+[ext_resource type="Texture2D" uid="uid://dd744w61080gb" path="res://sprites/start_text.png" id="4_ubcj4"]
+[ext_resource type="AudioStream" uid="uid://by5jkfv3lfrkw" path="res://audio/honks/honk_2.wav" id="4_yextn"]
+[ext_resource type="AudioStream" uid="uid://cho5snvaowotj" path="res://audio/honks/honk_3.wav" id="5_ucfrv"]
+[ext_resource type="Texture2D" uid="uid://b0841628prrh6" path="res://sprites/end_text.png" id="5_ysg7p"]
+[ext_resource type="AudioStream" uid="uid://dw5w380u4ynt8" path="res://audio/honks/honk_4.wav" id="6_g65f4"]
+[ext_resource type="AudioStream" uid="uid://m435pi85p2b1" path="res://audio/honks/honk_5.wav" id="7_lceru"]
+[ext_resource type="Texture2D" uid="uid://y417o3rh8b2c" path="res://sprites/close_goose_spritesheet.png" id="10_sxkcy"]
+[ext_resource type="Texture2D" uid="uid://dvkfy6xfe0s0k" path="res://sprites/close_goose_honk.png" id="11_4vdn7"]
+[ext_resource type="Texture2D" uid="uid://blxayc3jovwpu" path="res://sprites/quit_restart_text.png" id="12_kfioh"]
+[ext_resource type="AudioStream" uid="uid://b7isj4urelnmf" path="res://audio/music/chord-f.wav" id="13_wchaj"]
+[ext_resource type="AudioStream" uid="uid://boc1e4nc2cnok" path="res://audio/music/chord-c.wav" id="14_4dhhj"]
+[ext_resource type="AudioStream" uid="uid://x8hdw4mdim2p" path="res://audio/opening-curtains.wav" id="14_k6he8"]
+[ext_resource type="AudioStream" uid="uid://csw8lxm1ta710" path="res://audio/music/chord-g.wav" id="15_8d0ps"]
+[ext_resource type="AudioStream" uid="uid://dxywirtq8hor" path="res://audio/nature-ambiance.wav" id="16_5w2um"]
+[ext_resource type="Texture2D" uid="uid://cu81vutyfdctn" path="res://sprites/control_help_text.png" id="17_snasu"]
+[ext_resource type="Texture2D" uid="uid://dhrq16e3lxkud" path="res://sprites/credits.png" id="18_85hxa"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jbop5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ghlf5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_34yhb"]
+resource_name = "curtain_rise"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.535887, 2.46229),
+"update": 0,
+"values": [Vector2(1920, -1200), Vector2(1920, 1200)]
+}
+
+[sub_resource type="Animation" id="Animation_o6yf5"]
+resource_name = "curtain_fall"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2.07053, 2.46229),
+"update": 0,
+"values": [Vector2(1920, 1200), Vector2(1920, -1200)]
+}
+
+[sub_resource type="Animation" id="Animation_t5b31"]
+resource_name = "goose_show"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CloseUpGoose:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector2(660, 2400), Vector2(660, 1800)]
+}
+
+[sub_resource type="Animation" id="Animation_judoc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CloseUpGoose:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(660, 2400)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4u63s"]
+_data = {
+"RESET": SubResource("Animation_judoc"),
+"curtain_fall": SubResource("Animation_34yhb"),
+"curtain_rise": SubResource("Animation_o6yf5"),
+"goose_show": SubResource("Animation_t5b31")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dllxw"]
+random_pitch = 1.25
+random_volume_offset_db = 0.89
+streams_count = 5
+stream_0/stream = ExtResource("3_wb3kn")
+stream_1/stream = ExtResource("4_yextn")
+stream_2/stream = ExtResource("5_ucfrv")
+stream_3/stream = ExtResource("6_g65f4")
+stream_4/stream = ExtResource("7_lceru")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qkie"]
+atlas = ExtResource("10_sxkcy")
+region = Rect2(0, 0, 1320, 831)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx62i"]
+atlas = ExtResource("10_sxkcy")
+region = Rect2(1320, 0, 1320, 831)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcxjf"]
+atlas = ExtResource("10_sxkcy")
+region = Rect2(2640, 0, 1320, 831)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_durkh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qkie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx62i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcxjf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": ExtResource("11_4vdn7")
+}],
+"loop": false,
+"name": &"honk",
+"speed": 5.0
+}]
+
+[node name="FinalCurtain" type="CanvasLayer"]
+script = ExtResource("1_lxy5v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1920, 1200)
+sprite_frames = SubResource("SpriteFrames_jbop5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4u63s")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_dllxw")
+
+[node name="StartText" type="Sprite2D" parent="."]
+position = Vector2(1933, 1100)
+texture = ExtResource("4_ubcj4")
+
+[node name="EndText" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1906, 1074)
+texture = ExtResource("5_ysg7p")
+
+[node name="CloseUpGoose" type="AnimatedSprite2D" parent="."]
+position = Vector2(660, 2400)
+sprite_frames = SubResource("SpriteFrames_durkh")
+
+[node name="EndInstructions" type="Sprite2D" parent="."]
+position = Vector2(2800, 1613)
+texture = ExtResource("12_kfioh")
+
+[node name="StartMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_wchaj")
+
+[node name="OpenCurtainNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_k6he8")
+
+[node name="OpenCurtainMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_4dhhj")
+
+[node name="CloseCurtainMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_8d0ps")
+
+[node name="BackgroundSounds" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_5w2um")
+autoplay = true
+
+[node name="ControlHelpText" type="Sprite2D" parent="."]
+position = Vector2(1025, 1613)
+texture = ExtResource("17_snasu")
+
+[node name="Credits" type="Sprite2D" parent="."]
+position = Vector2(3402, 559)
+texture = ExtResource("18_85hxa")
+
+[connection signal="finished" from="BackgroundSounds" to="." method="_on_background_sounds_finished"]

@@ -1,0 +1,110 @@
+[gd_scene load_steps=12 format=3 uid="uid://bpic6gtp33wmx"]
+
+[ext_resource type="PackedScene" uid="uid://d4hnw4he3r0ui" path="res://scenes/goose.tscn" id="1_nxvfo"]
+[ext_resource type="Texture2D" uid="uid://bhcga5psbifav" path="res://sprites/goose_ground.png" id="2_pq7rf"]
+[ext_resource type="PackedScene" uid="uid://8o3aekaqkfaj" path="res://scenes/gift.tscn" id="3_v24c5"]
+[ext_resource type="PackedScene" uid="uid://cdcjqptibcs5q" path="res://scenes/checklist.tscn" id="4_e4ffv"]
+[ext_resource type="PackedScene" uid="uid://d2y4tquqqh4w6" path="res://scenes/cake.tscn" id="5_bqdwa"]
+[ext_resource type="PackedScene" uid="uid://b48s4awroy6rw" path="res://scenes/final_curtain.tscn" id="6_0dwf7"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ejkod"]
+normal = Vector2(1, 0)
+distance = -800.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_wylib"]
+normal = Vector2(-1, 0)
+distance = -4640.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xr1yj"]
+distance = -1370.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rfmk1"]
+normal = Vector2(0, 1)
+distance = 180.0
+
+[sub_resource type="GDScript" id="GDScript_5kccq"]
+resource_name = "camera"
+script/source = "extends Camera2D
+
+@onready var node_to_follow = get_node(\"../Goose/AnimatedSprite2D/FlipCam/CameraAnchor\")
+
+func _process(delta):
+	position = node_to_follow.get_global_position()
+"
+
+[node name="root" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Area2D" type="StaticBody2D" parent="."]
+
+[node name="Left" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("WorldBoundaryShape2D_ejkod")
+
+[node name="Right" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("WorldBoundaryShape2D_wylib")
+
+[node name="Bottom" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("WorldBoundaryShape2D_xr1yj")
+
+[node name="Top" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("WorldBoundaryShape2D_rfmk1")
+
+[node name="Goose" parent="." instance=ExtResource("1_nxvfo")]
+position = Vector2(333, 786)
+scale = Vector2(0.5, 0.5)
+collision_mask = 5
+
+[node name="Ground" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(1920, 540)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_pq7rf")
+
+[node name="Checklist" parent="." instance=ExtResource("4_e4ffv")]
+scale = Vector2(0.5, 0.5)
+transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotation = 3.14159
+scale = Vector2(0.0707106, -0.208891)
+limit_left = 0
+limit_top = 0
+limit_right = 3840
+limit_bottom = 1080
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+script = SubResource("GDScript_5kccq")
+
+[node name="Gifts" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(2522, 418)
+
+[node name="Gift1" parent="Gifts" instance=ExtResource("3_v24c5")]
+position = Vector2(-438, 262)
+scale = Vector2(0.5, 0.5)
+
+[node name="Gift2" parent="Gifts" instance=ExtResource("3_v24c5")]
+position = Vector2(-149, -61)
+scale = Vector2(0.5, 0.5)
+
+[node name="Gift3" parent="Gifts" instance=ExtResource("3_v24c5")]
+position = Vector2(-75, 497)
+scale = Vector2(0.5, 0.5)
+
+[node name="Cake" parent="." instance=ExtResource("5_bqdwa")]
+position = Vector2(3289, 662)
+scale = Vector2(0.5, 0.5)
+collision_layer = 5
+
+[node name="FinalCurtain" parent="." instance=ExtResource("6_0dwf7")]
+scale = Vector2(0.5, 0.5)
+transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
+
+[connection signal="honked" from="Goose" to="Checklist" method="_on_goose_honked"]
+[connection signal="finished" from="Checklist" to="FinalCurtain" method="_on_checklist_finished"]
+[connection signal="opened" from="Gifts/Gift1" to="Checklist" method="_on_gift_opened"]
+[connection signal="opened" from="Gifts/Gift2" to="Checklist" method="_on_gift_opened"]
+[connection signal="opened" from="Gifts/Gift3" to="Checklist" method="_on_gift_opened"]
+[connection signal="blown_out" from="Cake" to="Checklist" method="_on_cake_blown_out"]
+[connection signal="game_ended" from="FinalCurtain" to="Goose" method="_on_game_ended"]
+[connection signal="game_started" from="FinalCurtain" to="Goose" method="_on_game_started"]
