@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://d2y4tquqqh4w6"]
+[gd_scene load_steps=15 format=3 uid="uid://d2y4tquqqh4w6"]
 
 [ext_resource type="Texture2D" uid="uid://dfq2pxnaghqaa" path="res://sprites/cake_spritesheet.png" id="1_ck8nc"]
 [ext_resource type="Script" path="res://scenes/cake.gd" id="1_ombk0"]
 [ext_resource type="AudioStream" uid="uid://bi5tidbgjsu85" path="res://audio/woosh.wav" id="3_6fywe"]
+[ext_resource type="Texture2D" uid="uid://dn5t51fshkn2w" path="res://sprites/goose_shadow.png" id="4_cwlvq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k0w8"]
 size = Vector2(595, 139)
@@ -111,6 +112,12 @@ shape = SubResource("RectangleShape2D_hejei")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_6fywe")
 volume_db = 11.071
+
+[node name="GooseShadow" type="Sprite2D" parent="."]
+position = Vector2(-14, -37)
+rotation = -3.13343
+scale = Vector2(1.39868, 2.63527)
+texture = ExtResource("4_cwlvq")
 
 [connection signal="area_entered" from="FlameArea" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="FlameArea" to="." method="_on_flame_area_area_exited"]

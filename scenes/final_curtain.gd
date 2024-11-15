@@ -21,9 +21,9 @@ func _process(delta):
 		$Credits.visible = false
 
 		_open_curtain()
-		game_started.emit()
 		game_running = true
 		await get_tree().create_timer(0.5).timeout
+		game_started.emit()
 		$OpenCurtainMusic.play()
 		
 	elif game_over: 

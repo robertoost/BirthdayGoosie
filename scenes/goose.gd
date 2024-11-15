@@ -23,6 +23,8 @@ var finish_frame = 0
 
 var game_running = false
 
+var honk_switch = false
+
 func _on_game_started():
 	game_running = true
 
@@ -129,6 +131,8 @@ func _handle_animation(delta, direction, vert_direction):
 		# If we're switching to or from honking, continue animation progress.
 		#
 		if seek:
+			if frame == 1 or frame == 3:
+				honk_switch = true
 			animation.frame = frame
 			animation.frame_progress = frame_progress
 		
@@ -161,10 +165,11 @@ func _on_animated_sprite_2d_frame_changed():
 	if "walk" in animation.animation and animation.frame_progress == 0:
 		match animation.frame:
 			1, 3:
-				if not footstep_audio.playing:
+				if not honk_switch:
 					footstep_audio.play()
-				else:
-					print("Prevented doubles!")
+					honk_switch = true
+			0, 2:
+				honk_switch = false
 
 
 func _on_game_ended():
