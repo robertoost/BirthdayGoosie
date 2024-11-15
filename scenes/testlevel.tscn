@@ -1,7 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bpic6gtp33wmx"]
+[gd_scene load_steps=12 format=3 uid="uid://bpic6gtp33wmx"]
 
 [ext_resource type="PackedScene" uid="uid://d4hnw4he3r0ui" path="res://scenes/goose.tscn" id="1_nxvfo"]
-[ext_resource type="Texture2D" uid="uid://d4k4pjbdcxa3o" path="res://sprites/ground_spritesheet.png" id="2_ktrg6"]
+[ext_resource type="Texture2D" uid="uid://bhcga5psbifav" path="res://sprites/goose_ground.png" id="2_pq7rf"]
 [ext_resource type="PackedScene" uid="uid://8o3aekaqkfaj" path="res://scenes/gift.tscn" id="3_v24c5"]
 [ext_resource type="PackedScene" uid="uid://cdcjqptibcs5q" path="res://scenes/checklist.tscn" id="4_e4ffv"]
 [ext_resource type="PackedScene" uid="uid://d2y4tquqqh4w6" path="res://scenes/cake.tscn" id="5_bqdwa"]
@@ -21,35 +21,6 @@ distance = -1370.0
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rfmk1"]
 normal = Vector2(0, 1)
 distance = 180.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gklaq"]
-atlas = ExtResource("2_ktrg6")
-region = Rect2(0, 0, 7680, 2160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yyy1h"]
-atlas = ExtResource("2_ktrg6")
-region = Rect2(7680, 0, 7680, 2160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_owps1"]
-atlas = ExtResource("2_ktrg6")
-region = Rect2(15360, 0, 7680, 2160)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_r5cmq"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gklaq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yyy1h")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_owps1")
-}],
-"loop": true,
-"name": &"default",
-"speed": 2.5
-}]
 
 [sub_resource type="GDScript" id="GDScript_5kccq"]
 resource_name = "camera"
@@ -83,12 +54,11 @@ position = Vector2(333, 786)
 scale = Vector2(0.5, 0.5)
 collision_mask = 5
 
-[node name="Ground" type="AnimatedSprite2D" parent="."]
+[node name="Ground" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(1920, 540)
 scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_r5cmq")
-frame_progress = 0.143713
+texture = ExtResource("2_pq7rf")
 
 [node name="Checklist" parent="." instance=ExtResource("4_e4ffv")]
 scale = Vector2(0.5, 0.5)

@@ -286,7 +286,7 @@ z_index = 1
 y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_oevbk")
 animation = &"jump"
-frame_progress = 0.998207
+frame_progress = 0.727612
 centered = false
 offset = Vector2(-300, -680)
 
